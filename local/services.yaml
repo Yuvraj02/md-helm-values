@@ -1,0 +1,25 @@
+# Local Kind overrides for md-charts/services.
+# Cluster context: kind-kind
+#
+# Chart defaults enable auth + blogs on port 50051 each (separate
+# ClusterIP Services), replicaCount (1), and Kind-friendly resources.
+# Gateway stays on 8080 in md-charts/gateway. This file intentionally
+# does NOT invent image repos/tags, extra env, probes, or secret names.
+#
+# Supply manually before a real local deploy (uncomment and fill):
+#
+# services:
+#   auth:
+#     image:
+#       repository: <image available to Kind>
+#       tag: <tag>
+#     env: []       # non-secret only (e.g. DATABASE_HOST once known in-cluster)
+#     envFrom: []   # secretRef — Secret must already exist
+#   blogs:
+#     image:
+#       repository: <image available to Kind>
+#       tag: <tag>
+#     env: []
+#     envFrom: []
+
+{}
