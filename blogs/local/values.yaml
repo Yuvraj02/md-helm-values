@@ -1,5 +1,60 @@
-# Kind (kind-kind) overrides for md-charts/blogs.
-# Chart defaults (50051 ClusterIP, GRPC_PORT) already apply.
-# Supply image.repository/tag, DB-related non-secret env, and secretRefs when known.
+# Local Kind overrides for md-charts/blogs.
+# Sourced from backend/services/blog-service/deployments/k8s.yaml
+# (adapted for Kind + chart schema). Migrate Job is not in the Helm chart.
+#
+# Port note: k8s.yaml used 50052; Marketing Digest ClusterIP design uses 50051
+# for both auth and blogs (distinct Service DNS names).
+#
+# Secrets: create Secret "blog-service-secrets" with key DATABASE_PASSWORD manually.
+# DATABASE_HOST must resolve from the cluster (in-cluster Service or Kind→host networking).
 
-{}
+fullnameOverride: blog-service
+
+replicaCount: 1
+
+image:
+  repository: marketing-digest-blog-service
+  tag: latest
+  pullPolicy: IfNotPresent
+
+containerPort: 50051
+
+service:
+  port: 50051
+  targetPort: 50051
+
+livenessProbe:
+  grpc:
+    port: 50051
+  initialDelaySeconds: 10
+  periodSeconds: 20
+
+readinessProbe:
+  grpc:
+    port: 50051
+  initialDelaySeconds: 3
+  periodSeconds: 5
+
+env:
+  - name: APP_ENV
+    value: development
+  - name: SERVICE_NAME
+    value: blog-service
+  - name: GRPC_PORT
+    value: "50051"
+  - name: DATABASE_HOST
+    value: blog-postgres
+  - name: DATABASE_PORT
+    value: "5432"
+  - name: DATABASE_NAME
+    value: marketing_digest_blog
+  - name: DATABASE_USER
+    value: blog
+  - name: DATABASE_SSLMODE
+    value: disable
+  - name: SHUTDOWN_TIMEOUT
+    value: 15s
+
+envFrom:
+  - secretRef:
+      name: blog-service-secrets
