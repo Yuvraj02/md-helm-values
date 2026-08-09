@@ -1,0 +1,4 @@
+# Production overrides for md-charts/gateway.
+# Do not invent ECR URLs, domains, or secrets here — fill when AWS infra exists.
+
+{}

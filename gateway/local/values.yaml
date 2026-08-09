@@ -1,0 +1,5 @@
+# Kind (kind-kind) overrides for md-charts/gateway.
+# Chart defaults (8080 ClusterIP, replicaCount 1) already apply.
+# Supply image.repository/tag, non-secret env, probes, and secretRefs when known.
+
+{}

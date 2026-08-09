@@ -1,0 +1,4 @@
+# Production overrides for md-charts/auth.
+# Do not invent ECR URLs, DB endpoints, or secrets here — fill when AWS infra exists.
+
+{}

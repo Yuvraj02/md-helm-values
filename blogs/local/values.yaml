@@ -1,0 +1,5 @@
+# Kind (kind-kind) overrides for md-charts/blogs.
+# Chart defaults (50051 ClusterIP, GRPC_PORT) already apply.
+# Supply image.repository/tag, DB-related non-secret env, and secretRefs when known.
+
+{}
