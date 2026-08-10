@@ -38,7 +38,7 @@ env:
   - name: SERVICE_NAME
     value: blog-service
   - name: GRPC_PORT
-    value: "50052"
+    value: "50051"
   - name: SHUTDOWN_TIMEOUT
     value: 15s
   - name: DATABASE_HOST
