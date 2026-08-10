@@ -14,21 +14,21 @@ image:
   tag: local
   pullPolicy: IfNotPresent
 
-containerPort: 50052
+containerPort: 50051
 
 service:
-  port: 50052
-  targetPort: 50052
+  port: 50051
+  targetPort: 50051
 
 livenessProbe:
   grpc:
-    port: 50052
+    port: 50051
   initialDelaySeconds: 10
   periodSeconds: 20
 
 readinessProbe:
   grpc:
-    port: 50052
+    port: 50051
   initialDelaySeconds: 3
   periodSeconds: 5
 
