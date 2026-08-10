@@ -1,12 +1,9 @@
 # Local Kind overrides for md-charts/blogs.
-# Sourced from backend/services/blog-service/deployments/k8s.yaml
-# (adapted for Kind + chart schema). Migrate Job is not in the Helm chart.
+# Non-secret settings aligned with backend/services/blog-service/.env.
+# DATABASE_HOST: Kind pods cannot use "localhost" for host Postgres; 172.18.0.1
+# is the kind Docker bridge gateway to the host (where .env uses localhost:5432).
 #
-# Port note: k8s.yaml used 50052; Marketing Digest ClusterIP design uses 50051
-# for both auth and blogs (distinct Service DNS names).
-#
-# Secrets: create Secret "blog-service-secrets" with key DATABASE_PASSWORD manually.
-# DATABASE_HOST must resolve from the cluster (in-cluster Service or Kind→host networking).
+# Secrets stay out of Git — see Secret blog-service-secrets in cluster.
 
 fullnameOverride: blog-service
 
@@ -17,21 +14,21 @@ image:
   tag: local
   pullPolicy: IfNotPresent
 
-containerPort: 50051
+containerPort: 50052
 
 service:
-  port: 50051
-  targetPort: 50051
+  port: 50052
+  targetPort: 50052
 
 livenessProbe:
   grpc:
-    port: 50051
+    port: 50052
   initialDelaySeconds: 10
   periodSeconds: 20
 
 readinessProbe:
   grpc:
-    port: 50051
+    port: 50052
   initialDelaySeconds: 3
   periodSeconds: 5
 
@@ -41,19 +38,25 @@ env:
   - name: SERVICE_NAME
     value: blog-service
   - name: GRPC_PORT
-    value: "50051"
+    value: "50052"
+  - name: SHUTDOWN_TIMEOUT
+    value: 15s
   - name: DATABASE_HOST
-    value: blog-postgres
+    value: "172.18.0.1"
   - name: DATABASE_PORT
     value: "5432"
   - name: DATABASE_NAME
     value: marketing_digest_blog
   - name: DATABASE_USER
-    value: blog
+    value: marketing_digest
   - name: DATABASE_SSLMODE
     value: disable
-  - name: SHUTDOWN_TIMEOUT
-    value: 15s
+  - name: DB_MAX_OPEN_CONNS
+    value: "25"
+  - name: DB_MAX_IDLE_CONNS
+    value: "5"
+  - name: DB_CONN_MAX_LIFETIME
+    value: 30m
 
 envFrom:
   - secretRef:

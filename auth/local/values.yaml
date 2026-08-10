@@ -1,9 +1,9 @@
 # Local Kind overrides for md-charts/auth.
-# Sourced from backend/services/auth-service/deployments/k8s.yaml
-# (adapted for Kind + chart schema). Migrate Job is not in the Helm chart.
+# Non-secret settings aligned with backend/services/auth-service/.env.
+# DATABASE_HOST: Kind pods cannot use "localhost" for host Postgres; 172.18.0.1
+# is the kind Docker bridge gateway to the host (where .env uses localhost:5432).
 #
-# Secrets: create Secret "auth-service-secrets" with key DATABASE_PASSWORD manually.
-# DATABASE_HOST must resolve from the cluster (in-cluster Service or Kind→host networking).
+# Secrets stay out of Git — see Secret auth-service-secrets in cluster.
 
 fullnameOverride: auth-service
 
@@ -39,18 +39,24 @@ env:
     value: auth-service
   - name: GRPC_PORT
     value: "50051"
+  - name: SHUTDOWN_TIMEOUT
+    value: 15s
   - name: DATABASE_HOST
-    value: auth-postgres
+    value: "172.18.0.1"
   - name: DATABASE_PORT
     value: "5432"
   - name: DATABASE_NAME
     value: marketing_digest_auth
   - name: DATABASE_USER
-    value: auth
+    value: marketing_digest
   - name: DATABASE_SSLMODE
     value: disable
-  - name: SHUTDOWN_TIMEOUT
-    value: 15s
+  - name: DB_MAX_OPEN_CONNS
+    value: "25"
+  - name: DB_MAX_IDLE_CONNS
+    value: "5"
+  - name: DB_CONN_MAX_LIFETIME
+    value: 30m
 
 envFrom:
   - secretRef:

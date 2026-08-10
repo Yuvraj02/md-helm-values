@@ -1,6 +1,7 @@
 # Local Kind overrides for md-charts/gateway.
-# Sourced from backend/gateway/deployments/k8s.yaml (adapted for Kind + chart schema).
-# Secrets: create Secret "gateway-secrets" with key OWNER_STUDIO_SECRET manually.
+# Non-secret settings aligned with backend/gateway/.env.
+# gRPC addrs use in-cluster Service DNS (not host localhost).
+# OWNER_STUDIO_SECRET comes from Secret gateway-secrets (not Git).
 
 fullnameOverride: gateway
 
@@ -10,9 +11,6 @@ image:
   repository: md-local-registry:5000/marketing-digest/gateway
   tag: local
   pullPolicy: IfNotPresent
-
-# Chart default service.port is 8080 (ClusterIP behind LB later).
-# k8s.yaml used Service port 80; not used for local Kind.
 
 livenessProbe:
   httpGet:
@@ -33,14 +31,14 @@ env:
     value: development
   - name: HTTP_PORT
     value: "8080"
+  - name: SHUTDOWN_TIMEOUT
+    value: 15s
   - name: AUTH_SERVICE_GRPC_ADDR
     value: auth-service:50051
   - name: BLOG_SERVICE_GRPC_ADDR
-    value: blog-service:50051
+    value: blog-service:50052
   - name: CORS_ALLOWED_ORIGINS
     value: "*"
-  - name: SHUTDOWN_TIMEOUT
-    value: 15s
   - name: OWNER_STUDIO_SECRET
     valueFrom:
       secretKeyRef:
