@@ -13,8 +13,8 @@ fullnameOverride: blog-service
 replicaCount: 1
 
 image:
-  repository: marketing-digest-blog-service
-  tag: latest
+  repository: md-local-registry:5000/marketing-digest/blogs
+  tag: local
   pullPolicy: IfNotPresent
 
 containerPort: 50051

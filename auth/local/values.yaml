@@ -10,8 +10,8 @@ fullnameOverride: auth-service
 replicaCount: 1
 
 image:
-  repository: marketing-digest-auth-service
-  tag: latest
+  repository: md-local-registry:5000/marketing-digest/auth
+  tag: local
   pullPolicy: IfNotPresent
 
 containerPort: 50051

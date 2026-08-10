@@ -7,8 +7,8 @@ fullnameOverride: gateway
 replicaCount: 1
 
 image:
-  repository: marketing-digest-gateway
-  tag: latest
+  repository: md-local-registry:5000/marketing-digest/gateway
+  tag: local
   pullPolicy: IfNotPresent
 
 # Chart default service.port is 8080 (ClusterIP behind LB later).
