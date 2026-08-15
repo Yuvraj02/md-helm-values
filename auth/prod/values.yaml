@@ -7,7 +7,7 @@ replicaCount: 1
 
 image:
   repository: 095466867304.dkr.ecr.ap-south-1.amazonaws.com/marketing-digest/auth
-  tag: "0.0.0"
+  tag: "1d0e51ef"
   pullPolicy: IfNotPresent
 
 containerPort: 50051
