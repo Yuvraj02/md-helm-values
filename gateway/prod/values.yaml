@@ -7,7 +7,7 @@ replicaCount: 1
 
 image:
   repository: 095466867304.dkr.ecr.ap-south-1.amazonaws.com/marketing-digest/gateway
-  tag: "0.0.0"
+  tag: "a6abdec8"
   pullPolicy: IfNotPresent
 
 env:
