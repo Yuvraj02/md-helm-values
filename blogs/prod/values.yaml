@@ -1,4 +1,41 @@
 # Production overrides for md-charts/blogs.
-# Do not invent ECR URLs, DB endpoints, or secrets here — fill when AWS infra exists.
+# image.tag is bumped by Jenkins after a successful migration Job; Argo CD syncs.
 
-{}
+fullnameOverride: blog-service
+
+replicaCount: 1
+
+image:
+  repository: 095466867304.dkr.ecr.ap-south-1.amazonaws.com/marketing-digest/blog
+  tag: "0.0.0"
+  pullPolicy: IfNotPresent
+
+containerPort: 50051
+
+service:
+  port: 50051
+  targetPort: 50051
+
+env:
+  - name: APP_ENV
+    value: production
+  - name: SERVICE_NAME
+    value: blog-service
+  - name: GRPC_PORT
+    value: "50051"
+  - name: SHUTDOWN_TIMEOUT
+    value: 15s
+  - name: DATABASE_HOST
+    value: marketing-digest-production-postgres.c5imcgsg0f2z.ap-south-1.rds.amazonaws.com
+  - name: DATABASE_PORT
+    value: "5432"
+  - name: DATABASE_NAME
+    value: marketing_digest_blog
+  - name: DATABASE_USER
+    value: md_admin
+  - name: DATABASE_SSLMODE
+    value: require
+
+envFrom:
+  - secretRef:
+      name: blog-service-secrets
